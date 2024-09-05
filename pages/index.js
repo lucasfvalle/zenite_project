@@ -1,5 +1,5 @@
 import { createClient } from 'contentful'
-import RecipeCard from '../components/RecipeCard'
+import PostCard from '../components/PostCard'
 
 export async function getStaticProps() {
 
@@ -8,26 +8,26 @@ export async function getStaticProps() {
     accessToken: process.env.CONTENTFUL_ACCESS_KEY,
   })
 
-  const res = await client.getEntries({ content_type: "recipe" })
+  const res = await client.getEntries({ content_type: "blogPost" })
 
   return {
     props: {
-      recipes: res.items,
+      posts: res.items,
     }
   }
 }
 
-export default function Recipes({ recipes }) {
-  console.log(recipes)
+export default function posts({ posts }) {
+  console.log(posts)
 
   return (
-    <div className="recipe-list">
-      {recipes.map(recipe => (
-        <RecipeCard key={recipe.sys.id} recipe={recipe} />
+    <div className="blogPost-list">
+      {posts.map(blogPost => (
+        <PostCard key={blogPost.sys.id} blogPost={blogPost} />
       ))}
 
       <style jsx>{`
-        .recipe-list {
+        .blogPost-list {
           display: grid;
           grid-template-columns: 1fr 1fr;
           grid-gap: 20px 60px;

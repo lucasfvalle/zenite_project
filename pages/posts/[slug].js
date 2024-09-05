@@ -9,7 +9,7 @@ const client = createClient({
 
 export const getStaticPaths = async () => {
   const res = await client.getEntries({ 
-    content_type: "recipe" 
+    content_type: "blogPost" 
   })
 
   const paths = res.items.map(item => {
@@ -26,19 +26,19 @@ export const getStaticPaths = async () => {
 
 export const getStaticProps = async ({ params }) => {
   const { items } = await client.getEntries({
-    content_type: 'recipe',
+    content_type: 'blogPost',
     'fields.slug': params.slug
   })
 
   return {
-    props: { recipe: items[0] }
+    props: { blogPost: items[0] }
   }
 
 }
 
-export default function RecipeDetails({ recipe }) {
-  const { featuredImage, title, cookingTime, ingredients, method } = recipe.fields
-  console.log(method)
+export default function blogPostDetails({ blogPost }) {
+  const { featuredImage, title, content } = blogPost.fields
+  
 
   return (
     <div>
@@ -52,17 +52,9 @@ export default function RecipeDetails({ recipe }) {
       </div>
 
       <div className="info">
-        <p>Takes about { cookingTime } mins to cook.</p>
-        <h3>Ingredients:</h3>
-
-        {ingredients.map(ing => (
-          <span key={ing}>{ ing }</span>
-        ))}
-      </div>
         
-      <div className="method">
-        <h3>Method:</h3>
-        <div>{documentToReactComponents(method)}</div>
+      <div className="content">
+        <div>{documentToReactComponents(content)}</div>
       </div>
 
       <style jsx>{`
@@ -91,5 +83,6 @@ export default function RecipeDetails({ recipe }) {
         }
       `}</style>
     </div>
+  </div>
   )
 }
