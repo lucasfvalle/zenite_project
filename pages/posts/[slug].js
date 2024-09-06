@@ -1,5 +1,6 @@
 import { createClient } from 'contentful'
 import { documentToReactComponents } from '@contentful/rich-text-react-renderer'
+import Skeleton from '../../components/Skeleton'
 import Image from 'next/image'
 
 const client = createClient({
@@ -20,7 +21,7 @@ export const getStaticPaths = async () => {
 
   return {
     paths,
-    fallback: false
+    fallback: true
   }
 }
 
@@ -38,6 +39,9 @@ export const getStaticProps = async ({ params }) => {
 }
 
 export default function blogPostDetails({ blogPost }) {
+
+  if(!blogPost) return <Skeleton />
+
   const { featuredImage, title, content } = blogPost.fields
   
 
